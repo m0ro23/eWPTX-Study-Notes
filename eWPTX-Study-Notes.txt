@@ -9,7 +9,7 @@ Services and versions
 Frameworks in use
 Hidden panels or dev environments
 
-bashnmap -A -sV -sC target.com
+bash nmap -A -sV -sC target.com
 You'll catch things that save you hours later.
 
 Directory Enumeration
@@ -29,7 +29,7 @@ Things I find more often than I'd expect:
 /openapi.json
 /metrics
 
-bashgobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
+bash gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
 One forgotten endpoint can change everything.
 
 SQL Injection
