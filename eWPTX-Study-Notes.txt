@@ -1,0 +1,150 @@
+Personal notes from my journey learning web application penetration testing. Writing this down so I don't forget, and maybe it helps someone else too.
+
+Recon First, Always
+Most people skip straight to the app. Don't.
+Before touching anything, figure out what's actually running:
+
+Open ports
+Services and versions
+Frameworks in use
+Hidden panels or dev environments
+
+bashnmap -A -sV -sC target.com
+You'll catch things that save you hours later.
+
+Directory Enumeration
+A lot of interesting stuff is never linked in the frontend. You have to go looking for it.
+Tools I use:
+
+ffuf
+gobuster
+dirb
+
+Things I find more often than I'd expect:
+
+/admin
+/debug
+/api/docs
+/swagger
+/openapi.json
+/metrics
+
+bashgobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
+One forgotten endpoint can change everything.
+
+SQL Injection
+Still shows up everywhere. Worth really understanding, not just running sqlmap and hoping.
+Types to get comfortable with:
+
+Error-based
+Blind
+Time-based
+UNION-based
+Auth bypass
+
+The manual side matters. Knowing how to close quotes, fingerprint the database, and build payloads by hand is what separates good testing from just running a tool.
+
+NoSQL Injection
+Lots of modern apps run MongoDB. Most people only think about SQL and miss this entirely.
+Basic payload example:
+json{"username": {"$ne": null}, "password": {"$ne": null}}
+Operators worth knowing: $ne, $gt, $regex, $where
+Understanding how the backend builds queries is the key.
+
+JWT Testing
+JWTs are everywhere now. Get comfortable reading and attacking them.
+Things to test:
+
+Weak secrets (crack with hashcat or john)
+alg: none bypass
+HS256 vs RS256 confusion
+Modifying claims like "admin": false or "role": "user"
+
+Tools: jwt.io, hashcat, john
+
+APIs
+The frontend can be locked down while the API is wide open. Always test both.
+Common issues:
+
+IDOR / BOLA
+Mass assignment
+Excessive data exposure
+Hidden endpoints
+Weak or missing auth
+No rate limiting
+
+Always check /docs, /swagger, /openapi.json. Developers leave these exposed more than they should.
+
+Information Disclosure
+Underrated. Worth checking every time.
+Places I always look:
+
+Response headers
+JavaScript files
+Stack traces
+.git exposure
+.env files
+Verbose error messages
+Debug routes
+
+JS files especially. They often contain internal API paths, tokens, hardcoded secrets, and dev URLs that were never meant to be public.
+
+Authentication & Sessions
+A secure-looking login doesn't mean the session handling is solid.
+Things to test:
+
+Session fixation
+Token reuse after logout
+Predictable session IDs
+JWT validation
+Auth bypass
+
+Behavior differs by framework (PHP, Node, Spring, FastAPI), so it's worth knowing the quirks of each.
+
+Misconfigurations
+Some of the easiest findings are also the most impactful.
+Common ones:
+
+Default credentials left in place
+Open admin panels
+Public S3 buckets or object storage
+Exposed Docker APIs
+Weak CORS policies
+Dev servers exposed to the internet
+
+Always worth a quick check.
+
+My General Workflow
+
+Recon
+Fingerprinting
+Directory and endpoint enumeration
+API discovery
+Authentication testing
+Authorization testing
+Injection testing
+Session analysis
+Information disclosure
+Notes and reporting
+
+Having a consistent process means I don't miss the easy stuff while chasing complex bugs.
+
+Resources I Actually Used
+
+PortSwigger Web Security Academy — best free resource for web pentesting labs, no debate
+
+Labs I spent the most time on:
+
+SQL Injection
+Authentication vulnerabilities
+Access control / IDOR
+JWT attacks
+API testing
+Information disclosure
+
+
+Honest Takeaway
+Most of the improvement came from understanding how web apps actually work, not from memorizing payloads.
+
+The same vulnerabilities show up over and over. Different targets, same mistakes. Once you start recognizing patterns, everything gets faster.
+Focus on fundamentals. The small details are usually where the real findings are.
