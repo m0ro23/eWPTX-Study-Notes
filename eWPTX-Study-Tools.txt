@@ -2,7 +2,7 @@ Tools I Use for Web Pentesting
 A quick reference for every tool I actually use. Organized by category so I can find things fast.
 
 Recon & Scanning
-ToolWhat I use it fornmapPort scanning, service detection, running default scripts
+Tool What I use it for nmap Port scanning, service detection, running default scripts
 bash# Full scan with version detection and default scripts
 nmap -A -sV -sC target.com
 
@@ -13,7 +13,7 @@ nmap -T4 target.com
 nmap -p- target.com
 
 Directory & Endpoint Enumeration
-ToolWhat I use it forffufFast fuzzing, good for vhosts toogobusterDirectory brute force, straightforwarddirbSimple directory enumeration
+Tool What I use it forffufFast fuzzing, good for vhosts too gobuster Directory brute force, straight forward dirb Simple directory enumeration
 bash# gobuster - directory mode
 gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
 
@@ -30,7 +30,7 @@ Endpoints I always look for manually:
 
 
 SQL Injection
-ToolWhat I use it forsqlmapAutomated SQLi detection and exploitation
+ToolWhat I use it for sqlmap Automated SQLi detection and exploitation
 bash# Basic scan
 sqlmap -u "http://target.com/page?id=1"
 
@@ -47,7 +47,7 @@ sqlmap -u "http://target.com/page?id=1" -D dbname -T users --dump
 sqlmap -u "http://target.com/login" --data="username=admin&password=test"
 
 JWT Attacks
-ToolWhat I use it forjwt.ioDecoding and inspecting JWTs (browser-based)hashcatCracking weak JWT secretsjohnAlternative for cracking JWT secrets
+Tool What I use it forjwt.ioDecoding and inspecting JWTs (browser-based)hashcatCracking weak JWT secretsjohnAlternative for cracking JWT secrets
 bash# Crack a JWT secret with hashcat
 hashcat -a 0 -m 16500 token.txt wordlist.txt
 
@@ -73,7 +73,7 @@ Scanner (Pro) — automated vulnerability scanning
 
 
 General Purpose / Misc
-ToolWhat I use it forcurlQuick manual requests, checking headerswgetDownloading files from targetsniktoQuick web server misconfiguration scanwhatwebFingerprinting web technologieswappalyzerBrowser extension for tech fingerprinting
+Tool What I use it for curl Quick manual requests, checking header swget Downloading files from targets nikto Quick web server misconfiguration scan whatweb Fingerprinting web technologies wappalyzer Browser extension for tech fingerprinting
 bash# Check response headers
 curl -I http://target.com
 
@@ -87,7 +87,7 @@ nikto -h http://target.com
 whatweb http://target.com
 
 Wordlists
-ListWhere I use it/usr/share/wordlists/dirb/common.txtQuick directory enum/usr/share/wordlists/dirb/big.txtDeeper directory enumSecLists/Discovery/Web-Content/API endpoints, parametersSecLists/Passwords/Password attacksrockyou.txtPassword / secret cracking
+ListWhere I use it/usr/share/wordlists/dirb/common.txtQuick directory enum/usr/share/wordlists/dirb/big.txtDeeper directory enumSecLists/Discovery/Web-Content/API endpoints, parameters SecLists/Passwords/Password attacks rockyou.txtPassword / secret cracking
 
 Resources
 
