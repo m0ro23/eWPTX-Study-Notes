@@ -1,0 +1,97 @@
+Tools I Use for Web Pentesting
+A quick reference for every tool I actually use. Organized by category so I can find things fast.
+
+Recon & Scanning
+ToolWhat I use it fornmapPort scanning, service detection, running default scripts
+bash# Full scan with version detection and default scripts
+nmap -A -sV -sC target.com
+
+# Quick scan, top 1000 ports
+nmap -T4 target.com
+
+# Scan all ports
+nmap -p- target.com
+
+Directory & Endpoint Enumeration
+ToolWhat I use it forffufFast fuzzing, good for vhosts toogobusterDirectory brute force, straightforwarddirbSimple directory enumeration
+bash# gobuster - directory mode
+gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt
+
+# ffuf - directory fuzzing
+ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
+
+# ffuf - with file extensions
+ffuf -u http://target.com/FUZZ -w wordlist.txt -e .php,.txt,.bak
+Endpoints I always look for manually:
+
+/admin, /debug, /metrics
+/api/docs, /swagger, /openapi.json
+/.git, /.env
+
+
+SQL Injection
+ToolWhat I use it forsqlmapAutomated SQLi detection and exploitation
+bash# Basic scan
+sqlmap -u "http://target.com/page?id=1"
+
+# With cookies (authenticated)
+sqlmap -u "http://target.com/page?id=1" --cookie="session=abc123"
+
+# Dump the database
+sqlmap -u "http://target.com/page?id=1" --dbs
+
+# Dump a specific table
+sqlmap -u "http://target.com/page?id=1" -D dbname -T users --dump
+
+# POST request
+sqlmap -u "http://target.com/login" --data="username=admin&password=test"
+
+JWT Attacks
+ToolWhat I use it forjwt.ioDecoding and inspecting JWTs (browser-based)hashcatCracking weak JWT secretsjohnAlternative for cracking JWT secrets
+bash# Crack a JWT secret with hashcat
+hashcat -a 0 -m 16500 token.txt wordlist.txt
+
+# Crack with john
+john --wordlist=wordlist.txt --format=HMAC-SHA256 token.txt
+Common things to test manually:
+
+Change alg to none and remove the signature
+Swap HS256 to RS256 with a public key
+Modify claims like "admin": false → "admin": true
+
+
+Burp Suite
+My main proxy for everything. Runs through almost every test I do.
+Things I use it for:
+
+Intercepting and modifying requests
+Repeater — replaying and tweaking requests manually
+Intruder — fuzzing parameters and brute forcing
+Decoder — encoding/decoding base64, URL, etc.
+Sequencer — analyzing token randomness
+Scanner (Pro) — automated vulnerability scanning
+
+
+General Purpose / Misc
+ToolWhat I use it forcurlQuick manual requests, checking headerswgetDownloading files from targetsniktoQuick web server misconfiguration scanwhatwebFingerprinting web technologieswappalyzerBrowser extension for tech fingerprinting
+bash# Check response headers
+curl -I http://target.com
+
+# Follow redirects and show headers
+curl -L -v http://target.com
+
+# Nikto scan
+nikto -h http://target.com
+
+# WhatWeb
+whatweb http://target.com
+
+Wordlists
+ListWhere I use it/usr/share/wordlists/dirb/common.txtQuick directory enum/usr/share/wordlists/dirb/big.txtDeeper directory enumSecLists/Discovery/Web-Content/API endpoints, parametersSecLists/Passwords/Password attacksrockyou.txtPassword / secret cracking
+
+Resources
+
+PortSwigger Web Security Academy — labs for everything listed here
+SecLists — wordlists for almost everything
+jwt.io — decode and inspect JWTs in the browser
+HackTricks — quick reference for techniques
